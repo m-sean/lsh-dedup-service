@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+docker build . \
+    -t lsh_dedup_services_build \
+    -f build.dockerfile \
+    --platform linux/amd64
+docker run -it -v $(pwd):/code --rm lsh_dedup_services_build
+
+for service in cluster callback
+    do
+        docker build . \
+            -f service.dockerfile \
+            -t $1.dkr.ecr.$2.amazonaws.com/lsh-dedup/$service-service \
+            --build-arg SERVICE_NAME=lsh-dedup-$service-service \
+            --platform linux/amd64
+    done
