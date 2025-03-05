@@ -59,7 +59,19 @@ fn extract(payload: Value) -> Result<Value, ServiceError> {
         .ok_or_else(|| ise("No 'responsePayload' object found"))?
         .to_owned();
     let (status, body) = match serde_json::from_value(resp_payload.clone()) {
-        Ok(ResponsePayload { status, body, .. }) => (status, body),
+        Ok(ResponsePayload { status, body, .. }) => match status {
+            Status::Ok => (status, body),
+            _ => {
+                let config: DedupConfig = payload
+                    .get("requestPayload")
+                    .map(|v| {
+                        serde_json::from_value(v.to_owned())
+                            .map_err(ServiceError::internal_server_error)
+                    })
+                    .ok_or_else(|| ise("No 'requestPayload' object found"))??;
+                (status, json!({ "errorMessage": body, "config": config }))
+            }
+        },
         Err(_) => {
             let msg = resp_payload
                 .get("errorMessage")

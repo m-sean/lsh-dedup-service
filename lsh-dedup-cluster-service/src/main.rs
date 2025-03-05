@@ -48,17 +48,5 @@ async fn dedup(config: DedupConfig) -> Result<Value, ServiceError> {
         "Dedupe completed in {:.4} secs",
         (std::time::Instant::now() - start).as_secs_f64()
     );
-    // let results: Vec<RecordResult> = dedup_table
-    //     .grouped_ids()
-    //     .into_iter()
-    //     .enumerate()
-    //     .flat_map(|(idx, group)| {
-    //         let cluster_id = format!("{idx}-{}", group.len());
-    //         group.into_iter().map(move |id| RecordResult {
-    //             id: id.to_string(),
-    //             cluster_id: cluster_id.clone(),
-    //         })
-    //     })
-    //     .collect();
     util::push_result_file(&client, config.data.bucket, config.data.key, dedup_table).await
 }
