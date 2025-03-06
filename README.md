@@ -44,7 +44,7 @@ On sucessfull completion you will receive a response like this:
         "bucket": "{ S3-BUCKET }/output",
         "key": "{ INPUT-FILE }.csv"
     },
-    "status": 200
+    "statusCode": 200
 }
 ```
 
@@ -61,8 +61,8 @@ If the cluster-service lambda fails:
             "numPerm": 64,
             "threshold": 0.49
         },
-        "errorMessage": "2025-03-05T18:35:55.615Z 06fe0c8c-7786-46d8-8159-13d846887b24 Task timed out after 900.29 seconds"
+        "message": "2025-03-05T18:35:55.615Z 06fe0c8c-7786-46d8-8159-13d846887b24 Task timed out after 900.29 seconds"
     },  
-    "status": 504
+    "statusCode": 504
 }
 ```

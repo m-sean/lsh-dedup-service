@@ -68,8 +68,9 @@ impl<'de> de::Deserialize<'de> for Status {
 }
 
 #[derive(Deserialize, Serialize)]
+#[serde(rename_all="camelCase")]
 pub struct ResponsePayload {
-    pub status: Status,
+    pub status_code: Status,
     pub headers: Value,
     pub body: Value,
 }
@@ -83,12 +84,12 @@ pub fn make_response_payload(
     });
     let response_payload = match result {
         Err(err) => ResponsePayload {
-            status: err.status,
+            status_code: err.status,
             headers,
             body: Value::String(err.msg),
         },
         Ok(body) => ResponsePayload {
-            status: Status::Ok,
+            status_code: Status::Ok,
             headers,
             body,
         },
