@@ -10,7 +10,7 @@ use lsh_dedup_service::response::make_response_payload;
 use lsh_dedup_service::util::get_region;
 use rusoto_core::{Client, Region};
 use rusoto_s3::S3Client;
-use serde_json::Value;
+use serde_json::{json, Value};
 
 lazy_static! {
     // AWS Region
@@ -48,5 +48,6 @@ async fn dedup(config: DedupConfig) -> Result<Value, ServiceError> {
         "Dedupe completed in {:.4} secs",
         (std::time::Instant::now() - start).as_secs_f64()
     );
-    util::push_result_file(&client, config.data.bucket, config.data.key, dedup_table).await
+    let output_data = util::push_result_file(&client, config.data.bucket, config.data.key, dedup_table).await?;
+    Ok(json!({ "datasetId": config.dataset_id, "data": output_data }))
 }

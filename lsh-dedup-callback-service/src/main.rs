@@ -87,8 +87,8 @@ fn extract(payload: Value) -> Result<Value, ServiceError> {
                 .get("requestPayload")
                 .ok_or_else(|| ise("No 'requestPayload' object found"))?
                 .to_owned();
-            let config: DedupConfig =
-                serde_json::from_value(req_payload).map_err(ServiceError::internal_server_error)?;
+            let config: DedupConfig = serde_json::from_value(req_payload)
+                .map_err(ServiceError::internal_server_error)?;
             (status, json!({ "message": msg, "config": config }))
         }
     };

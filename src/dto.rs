@@ -9,6 +9,7 @@ pub struct DataFile {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DedupConfig {
+    pub dataset_id: usize,
     pub data: DataFile,
     pub num_perm: usize,
     pub num_bands: usize,
