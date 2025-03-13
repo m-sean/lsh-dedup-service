@@ -53,7 +53,7 @@ pub async fn push_result_file<'a>(
     let object = writer
         .into_inner()
         .map_err(ServiceError::internal_server_error)?;
-    let output_bucket = bucket.replace("/input", "/output");
-    upload_object_to_s3(client, object, output_bucket.clone(), key.clone()).await?;
-    Ok(json!({ "bucket": output_bucket, "key": key }))
+    let output_key = key.replace("input/", "output/");
+    upload_object_to_s3(client, object, bucket.clone(), output_key.clone()).await?;
+    Ok(json!({ "bucket": bucket, "key": output_key }))
 }

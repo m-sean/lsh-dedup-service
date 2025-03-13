@@ -49,5 +49,5 @@ async fn dedup(config: DedupConfig) -> Result<Value, ServiceError> {
         (std::time::Instant::now() - start).as_secs_f64()
     );
     let output_data = util::push_result_file(&client, config.data.bucket, config.data.key, dedup_table).await?;
-    Ok(json!({ "datasetId": config.dataset_id, "data": output_data }))
+    Ok(json!({ "taskId": config.task_id, "data": output_data }))
 }

@@ -26,10 +26,10 @@ docker push { AWS-ACCOUNT }.dkr.ecr.{ AWS-REGION }.amazonaws.com/lsh-dedup/{ SER
 The payload to send to the cluster-service lambda should look like this:
 ```
 {
-    "datasetId": 76,
+    "taskId": 76,
     "data": {
-        "bucket": "{ S3-BUCKET }/input",
-        "key": "{ INPUT-FILE }.csv"
+        "bucket": { S3-BUCKET },
+        "key": "input/{ INPUT-FILE }.csv"
     },
     "numPerm": 64,
     "numBands": 16,
@@ -42,10 +42,10 @@ On sucessfull completion you will receive a response like this:
 ```
 {
     "body": {
-        "datasetId": 76,
+        "taskId": 76,
         "data": {
-            "bucket": "{ S3-BUCKET }/output",
-            "key": "{ INPUT-FILE }.csv"
+            "bucket": "{ S3-BUCKET }",
+            "key": "output/{ INPUT-FILE }.csv"
         }
     },
     "statusCode": 200
@@ -57,10 +57,10 @@ If the cluster-service lambda fails:
 {
     "body": {
         "config": {
-            "datasetId": 76,
+            "taskId": 76,
             "data": {
-                "bucket": "{ S3-BUCKET }/input",
-                "key": "{ INPUT-FILE }.csv"
+                "bucket": { S3-BUCKET },
+                "key": "input/{ INPUT-FILE }.csv"
             },
             "numBands": 16,
             "numPerm": 64,
